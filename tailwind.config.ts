@@ -47,6 +47,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        metro: {
+          DEFAULT: "hsl(var(--metro-blue))",
+        },
+        bus: {
+          DEFAULT: "hsl(var(--bus-green))",
+        },
+        transfer: {
+          DEFAULT: "hsl(var(--transfer-orange))",
+        },
+        delay: {
+          DEFAULT: "hsl(var(--delay-red))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -84,6 +96,11 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+        "slide-in": "slide-in 0.3s ease-out",
+      },
+      transitionDuration: {
+        '150': '150ms',
       },
     },
   },
