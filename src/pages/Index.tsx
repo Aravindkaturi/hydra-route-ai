@@ -21,21 +21,25 @@ const Index = () => {
     
     if (result) {
       setRouteData(result);
-      toast.success("Route found successfully!");
+      toast.success("✨ Route found successfully!", {
+        description: `${result.totalTime} mins via ${routeType === 'metro-only' ? 'Metro' : routeType === 'bus-only' ? 'Bus' : 'Mixed routes'}`
+      });
     } else {
-      toast.error("No route found. Please try different locations or route type.");
+      toast.error("No route found", {
+        description: "Please try different locations or route type."
+      });
       setRouteData(null);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col gradient-mesh">
       <Header currentLang={currentLang} onLanguageChange={handleLanguageChange} />
       
-      <main className="flex-1 container max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-          {/* Search Panel */}
-          <div className="lg:col-span-1 space-y-6">
+      <main className="flex-1 max-w-[1800px] mx-auto w-full p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+          {/* Search Panel - Left Sidebar */}
+          <div className="lg:col-span-4 xl:col-span-3 space-y-6">
             <SearchPanel onSearch={handleSearch} />
             
             {routeData && (
@@ -49,9 +53,11 @@ const Index = () => {
             )}
           </div>
 
-          {/* Map View */}
-          <div className="lg:col-span-2 h-[500px] lg:h-[calc(100vh-12rem)]">
-            <MapView routeData={routeData} />
+          {/* Map View - Main Area */}
+          <div className="lg:col-span-8 xl:col-span-9">
+            <div className="h-[500px] lg:h-[calc(100vh-10rem)] rounded-3xl overflow-hidden shadow-2xl border border-border/50">
+              <MapView routeData={routeData} />
+            </div>
           </div>
 
           {/* Mobile Route Summary */}
@@ -67,9 +73,18 @@ const Index = () => {
         </div>
       </main>
 
-      <footer className="bg-card border-t border-border py-4 px-4 sm:px-6 lg:px-8 mt-8">
-        <div className="max-w-7xl mx-auto text-center text-sm text-muted-foreground">
-          <p>Smart Route Planner for Hyderabad • Data-driven transit optimization</p>
+      <footer className="glass-card border-t mt-8">
+        <div className="max-w-[1800px] mx-auto py-6 px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              Smart Route Planner for Hyderabad • Powered by AI & Real-time Data
+            </p>
+            <div className="flex gap-4 text-xs text-muted-foreground">
+              <button className="hover:text-primary smooth-transition">About</button>
+              <button className="hover:text-primary smooth-transition">Privacy</button>
+              <button className="hover:text-primary smooth-transition">Terms</button>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
