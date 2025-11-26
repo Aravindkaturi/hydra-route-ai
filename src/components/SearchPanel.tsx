@@ -4,14 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { searchStops, type TransitStop } from "@/data/transitData";
+import { getTranslation, type Language } from "@/utils/translations";
 
 export type RouteType = 'fastest' | 'least-delay' | 'metro-only' | 'bus-only' | 'eco' | 'cheapest';
 
 interface SearchPanelProps {
   onSearch: (source: string, destination: string, routeType: RouteType) => void;
+  currentLang: string;
 }
 
-const SearchPanel = ({ onSearch }: SearchPanelProps) => {
+const SearchPanel = ({ onSearch, currentLang }: SearchPanelProps) => {
+  const t = getTranslation(currentLang as Language);
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [selectedRouteType, setSelectedRouteType] = useState<RouteType>('fastest');
@@ -41,18 +44,18 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
   }, [destination]);
 
   const routeFilters = [
-    { type: 'fastest' as RouteType, label: 'Fastest', icon: Zap, color: 'primary' },
-    { type: 'metro-only' as RouteType, label: 'Metro', icon: Train, color: 'metro' },
-    { type: 'bus-only' as RouteType, label: 'Bus', icon: Bus, color: 'bus' },
-    { type: 'eco' as RouteType, label: 'Eco', icon: Leaf, color: 'eco' },
-    { type: 'cheapest' as RouteType, label: 'Cheapest', icon: DollarSign, color: 'cheapest' },
-    { type: 'least-delay' as RouteType, label: 'No Delay', icon: Clock, color: 'accent' },
+    { type: 'fastest' as RouteType, label: t.routeFilters.fastest, icon: Zap, color: 'primary' },
+    { type: 'metro-only' as RouteType, label: t.routeFilters.metro, icon: Train, color: 'metro' },
+    { type: 'bus-only' as RouteType, label: t.routeFilters.bus, icon: Bus, color: 'bus' },
+    { type: 'eco' as RouteType, label: t.routeFilters.eco, icon: Leaf, color: 'eco' },
+    { type: 'cheapest' as RouteType, label: t.routeFilters.cheapest, icon: DollarSign, color: 'cheapest' },
+    { type: 'least-delay' as RouteType, label: t.routeFilters.noDelay, icon: Clock, color: 'accent' },
   ];
 
   const quickActions = [
-    { icon: Home, label: 'Home', location: 'Kondapur' },
-    { icon: Briefcase, label: 'Work', location: 'Hitec City' },
-    { icon: History, label: 'Recent', location: 'Ameerpet' },
+    { icon: Home, label: t.quickActions.home, location: 'Kondapur' },
+    { icon: Briefcase, label: t.quickActions.work, location: 'Hitec City' },
+    { icon: History, label: t.quickActions.recent, location: 'Ameerpet' },
   ];
 
   const handleSearch = () => {
@@ -97,7 +100,7 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
             </div>
             <Input
               type="text"
-              placeholder="Starting point"
+              placeholder={t.startingPoint}
               value={source}
               onChange={(e) => setSource(e.target.value)}
               className="pl-12 h-14 rounded-2xl border-2 border-border/50 focus:border-primary bg-background/50 text-base font-medium smooth-transition"
@@ -131,7 +134,7 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
             </div>
             <Input
               type="text"
-              placeholder="Destination"
+              placeholder={t.destination}
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className="pl-12 h-14 rounded-2xl border-2 border-border/50 focus:border-secondary bg-background/50 text-base font-medium smooth-transition"
@@ -165,7 +168,7 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
             className="w-full h-14 rounded-2xl bg-gradient-to-r from-primary to-primary-light hover:shadow-xl hover:scale-[1.02] smooth-transition text-base font-semibold"
           >
             <Search className="mr-2 h-5 w-5" />
-            Find Best Route
+            {t.findBestRoute}
           </Button>
         </div>
       </Card>
@@ -174,7 +177,7 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
       <Card className="glass-card p-5 animate-slide-in" style={{ animationDelay: '0.1s' }}>
         <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
           <Zap className="h-4 w-4 text-primary" />
-          Route Options
+          {t.routeOptions}
         </h3>
         <div className="grid grid-cols-2 gap-2">
           {routeFilters.map((filter) => (
@@ -203,7 +206,7 @@ const SearchPanel = ({ onSearch }: SearchPanelProps) => {
       {/* Info Card */}
       <Card className="glass-card p-4 animate-slide-in border-primary/20 bg-primary/5" style={{ animationDelay: '0.2s' }}>
         <p className="text-xs text-muted-foreground text-center">
-          🚇 Real-time Metro • 🚌 Live Bus Tracking • ⚡ Smart Routing
+          {t.infoText}
         </p>
       </Card>
     </div>
