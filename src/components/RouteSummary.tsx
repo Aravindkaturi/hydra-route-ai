@@ -1,5 +1,6 @@
 import { Clock, AlertCircle, ArrowRight, Train, Bus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getTranslation, type Language } from "@/utils/translations";
 
 export interface RouteSegment {
   origin: string;
@@ -13,9 +14,11 @@ interface RouteSummaryProps {
   totalTime: number;
   predictedDelay: number;
   segments: RouteSegment[];
+  currentLang: string;
 }
 
-const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps) => {
+const RouteSummary = ({ totalTime, predictedDelay, segments, currentLang }: RouteSummaryProps) => {
+  const t = getTranslation(currentLang as Language);
   const totalHours = Math.floor(totalTime / 60);
   const totalMinutes = totalTime % 60;
   const arrivalTime = new Date(Date.now() + totalTime * 60000);
@@ -27,7 +30,7 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-            Route Overview
+            {t.routeOverview}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -40,16 +43,16 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
               <div>
                 <div className="text-2xl font-bold text-foreground">
                   {totalHours > 0 && `${totalHours}h `}
-                  {totalMinutes}m
+                  {totalMinutes}{t.mins}
                 </div>
-                <div className="text-xs text-muted-foreground font-medium">Total Duration</div>
+                <div className="text-xs text-muted-foreground font-medium">{t.totalDuration}</div>
               </div>
             </div>
             <div className="text-right">
               <div className="text-sm font-semibold text-foreground">
-                ETA: {arrivalTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                {t.eta} {arrivalTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
               </div>
-              <div className="text-xs text-muted-foreground">Estimated Arrival</div>
+              <div className="text-xs text-muted-foreground">{t.estimatedArrival}</div>
             </div>
           </div>
 
@@ -58,8 +61,8 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
             <div className="flex items-center gap-3 p-3 bg-delay/10 border border-delay/20 rounded-xl">
               <AlertCircle className="h-5 w-5 text-delay flex-shrink-0" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-delay">Possible Delay</p>
-                <p className="text-xs text-muted-foreground">+{predictedDelay} mins expected</p>
+                <p className="text-sm font-semibold text-delay">{t.possibleDelay}</p>
+                <p className="text-xs text-muted-foreground">+{predictedDelay} {t.mins} {t.expected}</p>
               </div>
             </div>
           )}
@@ -69,7 +72,7 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
       {/* Route Details */}
       <Card className="glass-card animate-slide-in" style={{ animationDelay: '0.1s' }}>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Route Steps</CardTitle>
+          <CardTitle className="text-lg">{t.routeSteps}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -106,7 +109,7 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
                             : 'bg-bus text-white'
                           }
                         `}>
-                          {segment.mode === 'metro' ? 'METRO' : 'BUS'}
+                          {segment.mode === 'metro' ? t.metro : t.bus}
                         </span>
                         {segment.routeName && (
                           <span className="text-xs font-semibold text-foreground bg-muted/50 px-2 py-0.5 rounded-md">
@@ -124,7 +127,7 @@ const RouteSummary = ({ totalTime, predictedDelay, segments }: RouteSummaryProps
                       <div className="mt-2 flex items-center gap-2">
                         <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                         <span className="text-xs text-muted-foreground font-medium">
-                          {segment.duration} mins
+                          {segment.duration} {t.mins}
                         </span>
                       </div>
                     </div>

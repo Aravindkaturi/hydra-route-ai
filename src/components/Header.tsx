@@ -1,6 +1,7 @@
 import { Navigation, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { getTranslation, type Language } from "@/utils/translations";
 
 interface HeaderProps {
   currentLang: string;
@@ -9,6 +10,7 @@ interface HeaderProps {
 
 const Header = ({ currentLang, onLanguageChange }: HeaderProps) => {
   const [isDark, setIsDark] = useState(false);
+  const t = getTranslation(currentLang as Language);
   
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains('dark');
@@ -39,9 +41,9 @@ const Header = ({ currentLang, onLanguageChange }: HeaderProps) => {
           </div>
           <div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-              Smart Route Planner
+              {t.appTitle}
             </h1>
-            <p className="text-xs text-muted-foreground font-medium">Hyderabad Transit Navigator</p>
+            <p className="text-xs text-muted-foreground font-medium">{t.appSubtitle}</p>
           </div>
         </div>
         

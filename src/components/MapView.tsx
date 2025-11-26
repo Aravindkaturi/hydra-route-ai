@@ -2,15 +2,18 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { transitStops } from "@/data/transitData";
+import { getTranslation, type Language } from "@/utils/translations";
 
 interface MapViewProps {
   routeData?: {
     path: Array<{ lat: number; lon: number; name: string; mode: string }>;
     segments: Array<{ mode: string }>;
   };
+  currentLang: string;
 }
 
-const MapView = ({ routeData }: MapViewProps) => {
+const MapView = ({ routeData, currentLang }: MapViewProps) => {
+  const t = getTranslation(currentLang as Language);
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,7 @@ const MapView = ({ routeData }: MapViewProps) => {
         fillOpacity: 0.8,
       }).addTo(map);
 
-      marker.bindPopup(`<strong>${stop.name}</strong><br/>${stop.mode === 'both' ? 'Metro & Bus' : stop.mode}`);
+      marker.bindPopup(`<strong>${stop.name}</strong><br/>${stop.mode === 'both' ? t.metroBus : stop.mode === 'metro' ? t.metroLabel : t.busLabel}`);
     });
 
     return () => {
@@ -88,7 +91,7 @@ const MapView = ({ routeData }: MapViewProps) => {
         weight: 3,
         opacity: 1,
         fillOpacity: 1,
-      }).addTo(mapRef.current).bindPopup('<strong>Start</strong>');
+      }).addTo(mapRef.current).bindPopup(`<strong>${t.start}</strong>`);
 
       L.circleMarker(coordinates[coordinates.length - 1], {
         radius: 8,
@@ -97,7 +100,7 @@ const MapView = ({ routeData }: MapViewProps) => {
         weight: 3,
         opacity: 1,
         fillOpacity: 1,
-      }).addTo(mapRef.current).bindPopup('<strong>Destination</strong>');
+      }).addTo(mapRef.current).bindPopup(`<strong>${t.destinationLabel}</strong>`);
 
       // Fit bounds to show entire route
       mapRef.current.fitBounds(coordinates, { padding: [50, 50] });
